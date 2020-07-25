@@ -6,13 +6,13 @@
 
         <div>
             <p>random user api Loaded: {{ userLoaded }}</p>
-            <button @click="reload">Reload</button>
+            <button @click="reload(2)">Reload</button>
         </div>
     </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 export default {
     name: "app",
     components: {},
@@ -20,29 +20,31 @@ export default {
         this.$store.dispatch("getUser");
     },
     computed: {
-        ...mapState({
-            ifLoading(state) {
-                return state.isLoading;
-            },
-            times(state) {
-                return state.clickedTimes;
-            },
-            userLoaded(state) {
-                return state.loaded;
-            },
-        }),
+        ifLoading() {
+            return this.isLoading;
+        },
+        times() {
+            return this.clickedTimes;
+        },
+        userLoaded() {
+            return this.loaded;
+        },
+        ...mapState(["isLoading", "clickedTimes", "loaded"]),
     },
     methods: {
         reverseLoad(count) {
             this.$store.commit("loaded");
             this.$store.commit("addTimes", count);
         },
-        reload() {
+        reload(count) {
             this.$store.commit("setTrue");
+            this.clickedActions(count);
             if (this.$store.state.loaded) {
-                this.$store.dispatch("getUser");
+                this.getUser();
             }
         },
+
+        ...mapActions(["getUser", "clickedActions"]),
     },
 };
 </script>

@@ -31,6 +31,9 @@ const store = new Vuex.Store({
         },
         anotherActions() {
             console.log('Another Actions run!');
+        },
+        clickedActions({ commit }, payload) {
+            commit('addTimes', payload)
         }
 
     },
