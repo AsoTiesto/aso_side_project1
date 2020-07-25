@@ -4,8 +4,8 @@ import axios from 'axios'
 
 Vue.use(Vuex);
 
-// 定義一個新的 Vue Store
-const store = new Vuex.Store({
+const modalData = {
+    namespaced: true,
     state: {
         isLoading: false,
         clickedTimes: 0,
@@ -63,6 +63,12 @@ const store = new Vuex.Store({
         setUserInfo(state, payload) {
             state.users = payload
         }
+    }
+}
+
+const store = new Vuex.Store({
+    modules: {
+        moduleData: modalData
     }
 
 })

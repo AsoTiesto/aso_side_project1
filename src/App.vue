@@ -27,29 +27,27 @@ export default {
     },
     computed: {
         ifLoading() {
-            return this.isLoading;
+            return this.$store.state.moduleData.isLoading;
         },
         times() {
-            return this.clickedTimes;
+            return this.$store.state.moduleData.clickedTimes;
         },
         userLoaded() {
-            return this.loaded;
+            return this.$store.state.moduleData.loaded;
         },
-        ...mapGetters(["femaleNum"]),
-        ...mapState(["isLoading", "clickedTimes", "loaded"]),
+        ...mapGetters("moduleData", ["femaleNum"]),
     },
     methods: {
         reverseLoad(count) {
-            this.$store.commit("loaded");
-            this.$store.commit("addTimes", count);
+            this.$store.commit("moduleData/loaded", null, { root: true });
+            this.$store.commit("moduleData/addTimes", count, { root: true });
         },
         reload(count) {
-            this.$store.commit("setTrue");
+            this.$store.commit("moduleData/setTrue", null, { root: true });
             this.clickedActions(count);
             this.getUser();
         },
-
-        ...mapActions(["getUser", "clickedActions"]),
+        ...mapActions("moduleData", ["getUser", "clickedActions"]),
     },
 };
 </script>
