@@ -1,23 +1,29 @@
 <template>
     <div id="app">
-        <p>Loading: {{ ifLoading }}</p>
-        <p>點擊次數: {{ times }}</p>
-        <button @click="reverseLoad(2)">Reverse</button>
+        <div>
+            <p>Loading: {{ ifLoading }}</p>
+            <p>點擊次數: {{ times }}</p>
+            <button @click="reverseLoad(1)">Reverse</button>
+        </div>
 
         <div>
             <p>random user api Loaded: {{ userLoaded }}</p>
-            <button @click="reload(2)">Reload</button>
+            <button @click="reload(1)">Reload</button>
+        </div>
+
+        <div>
+            <p>Female number: {{ femaleNum }}</p>
         </div>
     </div>
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 export default {
     name: "app",
     components: {},
     mounted() {
-        this.$store.dispatch("getUser");
+        // this.$store.dispatch("getUser");
     },
     computed: {
         ifLoading() {
@@ -29,6 +35,7 @@ export default {
         userLoaded() {
             return this.loaded;
         },
+        ...mapGetters(["femaleNum"]),
         ...mapState(["isLoading", "clickedTimes", "loaded"]),
     },
     methods: {
@@ -39,9 +46,7 @@ export default {
         reload(count) {
             this.$store.commit("setTrue");
             this.clickedActions(count);
-            if (this.$store.state.loaded) {
-                this.getUser();
-            }
+            this.getUser();
         },
 
         ...mapActions(["getUser", "clickedActions"]),

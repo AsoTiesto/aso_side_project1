@@ -9,18 +9,28 @@ const store = new Vuex.Store({
     state: {
         isLoading: false,
         clickedTimes: 0,
-        loaded: false
+        loaded: false,
+        users: []
+    },
+    getters: {
+        femaleNum(state) {
+            return state.users.filter(item => item.gender == 'female').length;
+        }
     },
     actions: {
         getUser({ commit, dispatch }) {
-            axios.get('https://randomuser.me/api/')
+            axios.get('https://randomuser.me/api/?results=5')
                 .then(function (response) {
+                    let data = response.data.results
+
                     console.log(response);
 
-                    if (response) {
+                    if (response.status == 200) {
                         commit('myMutations')
+                        commit("setUserInfo", data)
                         dispatch('anotherActions')
                     } else {
+                        console.log("錯誤！ 呼叫 api 失敗");
                         this.$store.state.loaded = false
                     }
 
@@ -45,11 +55,13 @@ const store = new Vuex.Store({
             state.clickedTimes = state.clickedTimes + payload;
         },
         myMutations(state) {
-            console.log('呼叫成功！ 將 loaded 設為 false');
             state.loaded = false;
         },
         setTrue(state) {
             state.loaded = true;
+        },
+        setUserInfo(state, payload) {
+            state.users = payload
         }
     }
 
